@@ -18,7 +18,10 @@ namespace AzR.Web.Root.MEF
 
         public string[] GetViewLocations()
         {
-            var views = new List<string> { "~/Views/{1}/{0}.cshtml", "~/bin/Views/{1}/{0}.cshtml" };
+            var views = new List<string> {
+                "~/Views/{1}/{0}.cshtml",
+                "~/bin/Views/{1}/{0}.cshtml",
+                "~/Areas/Views/{1}/{0}.cshtml" };
 
             _plugins.ForEach(plugin =>
                 views.Add("~/Plugins/" + plugin + "/Views/{1}/{0}.cshtml")
@@ -26,12 +29,19 @@ namespace AzR.Web.Root.MEF
             _plugins.ForEach(plugin =>
                 views.Add("~/bin/" + plugin + "/Views/{1}/{0}.cshtml")
             );
+            _plugins.ForEach(plugin =>
+                views.Add("~/Areas/" + plugin + "/Views/{1}/{0}.cshtml")
+            );
+
             return views.ToArray();
         }
 
         public string[] GetMasterLocations()
         {
-            var masterPages = new List<string> { "~/Views/Shared/{0}.cshtml", "~/bin/Views/Shared/{0}.cshtml" };
+            var masterPages = new List<string> {
+                "~/Views/Shared/{0}.cshtml",
+                "~/bin/Views/Shared/{0}.cshtml",
+                "~/Areas/Views/Shared/{0}.cshtml" };
 
 
             _plugins.ForEach(plugin =>
@@ -40,7 +50,9 @@ namespace AzR.Web.Root.MEF
             _plugins.ForEach(plugin =>
                 masterPages.Add("~/bin/" + plugin + "/Views/Shared/{0}.cshtml")
             );
-
+            _plugins.ForEach(plugin =>
+                masterPages.Add("~/Areas/" + plugin + "/Views/Shared/{0}.cshtml")
+            );
             return masterPages.ToArray();
         }
     }

@@ -25,8 +25,6 @@ namespace AzR.Mef.Web
                 pluginFolders.Add(di.Name);
             });
 
-            AreaRegistration.RegisterAllAreas();
-
             //TODO Move into startup class 
             #region MOVETOSTATUP
 
@@ -34,12 +32,11 @@ namespace AzR.Mef.Web
             ControllerBuilder.Current.SetControllerFactory(new AzRControllerFactory(AzRBootstrap.Container));
             // ModelBinders.Binders.DefaultBinder = new InterfaceModelBinder();
 
-
             #endregion
 
             ViewEngines.Engines.Add(new AzRViewEngine(pluginFolders));
 
-
+            AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

@@ -1,5 +1,4 @@
-﻿using AzR.Mef.Web.Controllers;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace AzR.Mef.Web
@@ -14,8 +13,7 @@ namespace AzR.Mef.Web
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-                namespaces: new string[] { typeof(HomeController).Namespace }
-                //namespaces: new string[] { "AzR.Mef.Web.Controllers", "AzR.Plugin.Test.Web.Controllers" }
+                namespaces: new string[] { "AzR.Mef.Web.Controllers" }
             );
         }
     }
