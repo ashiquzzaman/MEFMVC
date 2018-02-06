@@ -64,8 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminAreaRegistration.cs" />
-    <Compile Include="Controllers\TestController.cs" />
-    <Compile Include="Models\TestModel.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -73,11 +72,18 @@
     <Content Include="Views\Web.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Views\Test\Index.cshtml">
+    <Content Include="Views\Employee\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\AzR.Core\AzR.Core.csproj">
+      <Project>{64a24b8d-7549-4841-9c1b-56d9aacf7413}</Project>
+      <Name>AzR.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Libraries\AzR.Web.Root\AzR.Web.Root.csproj">
       <Project>{B465CCF4-A9FC-438D-A03B-E164DE2D896B}</Project>
       <Name>AzR.Web.Root</Name>

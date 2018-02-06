@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentations", "Presentati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzR.Web.Root", "Libraries\AzR.Web.Root\AzR.Web.Root.csproj", "{B465CCF4-A9FC-438D-A03B-E164DE2D896B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzR.Core", "Libraries\AzR.Core\AzR.Core.csproj", "{64A24B8D-7549-4841-9C1B-56D9AACF7413}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{B465CCF4-A9FC-438D-A03B-E164DE2D896B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B465CCF4-A9FC-438D-A03B-E164DE2D896B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B465CCF4-A9FC-438D-A03B-E164DE2D896B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64A24B8D-7549-4841-9C1B-56D9AACF7413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64A24B8D-7549-4841-9C1B-56D9AACF7413}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64A24B8D-7549-4841-9C1B-56D9AACF7413}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64A24B8D-7549-4841-9C1B-56D9AACF7413}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +54,7 @@ Global
 		{AD5EE3F0-FCCA-4153-8C27-83F7BF245CB5} = {2A8FA7D5-2F20-419B-8E86-4551C8A5194D}
 		{7C23DCDC-75E1-4DF1-AAC9-7DEE7BDA973A} = {411A8DBA-7641-486B-9C37-07D74D8A9E83}
 		{B465CCF4-A9FC-438D-A03B-E164DE2D896B} = {411A8DBA-7641-486B-9C37-07D74D8A9E83}
+		{64A24B8D-7549-4841-9C1B-56D9AACF7413} = {411A8DBA-7641-486B-9C37-07D74D8A9E83}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AFDC4378-FEA4-4935-9616-FC432FB6C075}
