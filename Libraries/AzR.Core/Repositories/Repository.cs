@@ -10,27 +10,35 @@ using System.Threading.Tasks;
 namespace AzR.Core.Repositories
 {
     [Export(typeof(IRepository<>))]
-    //[PartCreationPolicy(CreationPolicy.NonShared)]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public class Repository<T> : IRepository<T> where T : class
     {
         #region Members
-        private IAppContext _context;
-        private Lazy<IAppContext> _dbcontext;
+        private IAppDbContext _context;
         [Import]
-        public Lazy<IAppContext> Context
+        public IAppDbContext Context
         {
             get
             {
-                return _dbcontext;
+                return _context;
             }
             set
             {
-                _dbcontext = value;
+                _context = value;
 
             }
         }
 
         private bool _disposed;
+
+        public Repository()
+        {
+        }
+        [ImportingConstructor]
+        public Repository(IAppDbContext context)
+        {
+            Context = context;
+        }
 
 
         #endregion

@@ -1,9 +1,9 @@
 using AzR.Core.Models;
 using AzR.Core.Repositories;
-
+using System.Data.Entity.Migrations;
 namespace AzR.Core.Migrations
 {
-    using System.Data.Entity.Migrations;
+
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
@@ -21,4 +21,24 @@ namespace AzR.Core.Migrations
                 new Employee { Id = 1, Name = "Zaman" });
         }
     }
+
+
+    internal sealed class ConfigurationTest : DbMigrationsConfiguration<TestDbContext>
+    {
+        public ConfigurationTest()
+        {
+            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
+        }
+
+        protected override void Seed(TestDbContext context)
+        {
+            context.Departments.AddOrUpdate(e => e.Id,
+                new Department { Id = 1, Name = "A" },
+                new Department { Id = 1, Name = "B" },
+                new Department { Id = 1, Name = "C" });
+        }
+    }
+
 }
+

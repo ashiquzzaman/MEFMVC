@@ -4,9 +4,9 @@ using System.Data.Entity;
 
 namespace AzR.Core.Repositories
 {
-    [Export(typeof(IAppContext))]
-    // [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class ApplicationDbContext : DbContext, IAppContext
+    [Export(typeof(IAppDbContext))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
+    public class ApplicationDbContext : DbContext, IAppDbContext
     {
         public ApplicationDbContext() : base("DefaultConnection")
         {

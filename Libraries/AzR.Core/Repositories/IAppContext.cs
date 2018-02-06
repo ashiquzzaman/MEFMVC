@@ -1,35 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Data.Entity.Migrations;
 
 namespace AzR.Core.Repositories
 {
     public interface IAppContext : IDisposable
     {
-        DbSet<TEntity> Set<TEntity>() where TEntity : class;
+        void Dispose(bool disposing);
+        IRepository<TEntity> Repository<TEntity>() where TEntity : class;
 
-        int SaveChanges();
-        Database Database { get; }
+        dynamic ExecuteProcedrue(string sp, object[] paramaters);
+        void Migrate<TContext, TConfiguration>() where TContext : DbContext where TConfiguration : DbMigrationsConfiguration<TContext>, new();
 
-        DbChangeTracker ChangeTracker { get; }
-        DbContextConfiguration Configuration { get; }
-
-        DbSet Set(Type entityType);
-        Task<int> SaveChangesAsync();
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        IEnumerable<DbEntityValidationResult> GetValidationErrors();
-        DbEntityEntry Entry(object entity);
-
-        string ToString();
-        bool Equals(object obj);
-        int GetHashCode();
-        Type GetType();
-
-
+        dynamic ExecuteProcedrue(string sp);
     }
-
 }

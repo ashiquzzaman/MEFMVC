@@ -4,14 +4,16 @@ using System.Data.Entity;
 
 namespace AzR.Core.Repositories
 {
-    //[Export(typeof(IAppContext))]
-    //public class TestDbContext : DbContext, IAppContext
-    //{
-    //    public TestDbContext() : base("DefaultConnection")
-    //    {
-    //    }
+    [Export(typeof(IAppDbContext))]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
 
-    //    public DbSet<Department> Departments { get; set; }
+    public class TestDbContext : DbContext, IAppDbContext
+    {
+        public TestDbContext() : base("DefaultConnection")
+        {
+        }
 
-    //}
+        public DbSet<Department> Departments { get; set; }
+
+    }
 }
