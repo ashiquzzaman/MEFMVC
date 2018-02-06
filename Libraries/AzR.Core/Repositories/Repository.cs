@@ -14,9 +14,24 @@ namespace AzR.Core.Repositories
     public class Repository<T> : IRepository<T> where T : class
     {
         #region Members
+        private IAppContext _context;
+        private Lazy<IAppContext> _dbcontext;
         [Import]
-        public IAppContext Context { get; set; }
+        public Lazy<IAppContext> Context
+        {
+            get
+            {
+                return _dbcontext;
+            }
+            set
+            {
+                _dbcontext = value;
+
+            }
+        }
+
         private bool _disposed;
+
 
         #endregion
 
@@ -39,7 +54,7 @@ namespace AzR.Core.Repositories
         // Entity corresponding Database Table
         private DbSet<T> DbSet
         {
-            get { return Context.Set<T>(); }
+            get { return _context.Set<T>(); }
         }
 
         #endregion
@@ -78,7 +93,7 @@ namespace AzR.Core.Repositories
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            var entry = Context.Entry(item);
+            var entry = _context.Entry(item);
             DbSet.Attach(item);
             entry.State = EntityState.Modified;
         }
@@ -106,7 +121,7 @@ namespace AzR.Core.Repositories
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
             DbSet.Add(item);
-            Context.SaveChanges();
+            _context.SaveChanges();
             return item;
         }
 
@@ -114,10 +129,10 @@ namespace AzR.Core.Repositories
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            var entry = Context.Entry(item);
+            var entry = _context.Entry(item);
             DbSet.Attach(item);
             entry.State = EntityState.Modified;
-            return Context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public int Update(Expression<Func<T, bool>> predicate)
@@ -129,13 +144,13 @@ namespace AzR.Core.Repositories
             }
             foreach (var record in records)
             {
-                var entry = Context.Entry(record);
+                var entry = _context.Entry(record);
 
                 DbSet.Attach(record);
 
                 entry.State = EntityState.Modified;
             }
-            return Context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public int Delete(T item)
@@ -144,7 +159,7 @@ namespace AzR.Core.Repositories
                 throw new ArgumentNullException(nameof(item));
             DbSet.Remove(item);
 
-            return Context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         public int Delete(Expression<Func<T, bool>> predicate)
@@ -158,7 +173,7 @@ namespace AzR.Core.Repositories
             {
                 DbSet.Remove(record);
             }
-            return Context.SaveChanges();
+            return _context.SaveChanges();
         }
 
         /// <summary>
@@ -257,10 +272,10 @@ namespace AzR.Core.Repositories
             {
                 if (disposing)
                 {
-                    if (Context != null)
+                    if (_context != null)
                     {
-                        Context.Dispose();
-                        Context = null;
+                        _context.Dispose();
+                        _context = null;
                     }
                 }
             }
@@ -307,7 +322,7 @@ namespace AzR.Core.Repositories
         public async Task<T> CreateAsync(T entity)
         {
             DbSet.Add(entity);
-            await Context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
@@ -320,10 +335,10 @@ namespace AzR.Core.Repositories
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
-            var entry = Context.Entry(item);
+            var entry = _context.Entry(item);
             DbSet.Attach(item);
             entry.State = EntityState.Modified;
-            return await Context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
         /// <summary>
         /// 
@@ -339,13 +354,13 @@ namespace AzR.Core.Repositories
             }
             foreach (var record in records)
             {
-                var entry = Context.Entry(record);
+                var entry = _context.Entry(record);
 
                 DbSet.Attach(record);
 
                 entry.State = EntityState.Modified;
             }
-            return await Context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -356,7 +371,7 @@ namespace AzR.Core.Repositories
         public async Task<int> DeleteAsync(T t)
         {
             DbSet.Remove(t);
-            return await Context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
         /// <summary>
         /// 
@@ -374,7 +389,7 @@ namespace AzR.Core.Repositories
             {
                 DbSet.Remove(record);
             }
-            return await Context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
 
         /// <summary>
@@ -488,7 +503,7 @@ namespace AzR.Core.Repositories
         {
             try
             {
-                return await Context.SaveChangesAsync();
+                return await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {

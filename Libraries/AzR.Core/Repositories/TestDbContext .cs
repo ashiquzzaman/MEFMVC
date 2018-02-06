@@ -1,4 +1,8 @@
-﻿namespace AzR.Core.Repositories
+﻿using AzR.Core.Models;
+using System.ComponentModel.Composition;
+using System.Data.Entity;
+
+namespace AzR.Core.Repositories
 {
     //[Export(typeof(IAppContext))]
     //public class TestDbContext : DbContext, IAppContext
@@ -7,7 +11,7 @@
     //    {
     //    }
 
-    //    public DbSet<Employee> Employees { get; set; }
+    //    public DbSet<Department> Departments { get; set; }
 
     //}
 }

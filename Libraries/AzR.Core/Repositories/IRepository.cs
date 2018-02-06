@@ -9,7 +9,7 @@ namespace AzR.Core.Repositories
     public interface IRepository<T> : IDisposable
         where T : class
     {
-        IAppContext Context { get; set; }
+        Lazy<IAppContext> Context { get; set; }
 
         #region LINQ QUERY
 
