@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Presentations\AzR.Mef.Web\Plugins\AzR.Plugin.Test.Web\</OutputPath>
+    <OutputPath>..\..\Presentations\AzR.Mef.Web\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -91,8 +91,11 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>(robocopy $(ProjectDir)Areas $(TargetDir)..\Areas\ /s) ^&amp; IF %25ERRORLEVEL%25 LEQ 4 exit /B 0
+(robocopy $(ProjectDir)Views $(TargetDir)..\Areas\$(ProjectName)\Views\ /s) ^&amp; IF %25ERRORLEVEL%25 LEQ 4 exit /B 0
+(robocopy $(ProjectDir)Content $(TargetDir)..\Themes\$(ProjectName)\Content\ /s) ^&amp; IF %25ERRORLEVEL%25 LEQ 4 exit /B 0
+(robocopy $(ProjectDir)Scripts $(TargetDir)..\Themes\$(ProjectName)\Scripts\ /s) ^&amp; IF %25ERRORLEVEL%25 LEQ 4 exit /B 0
+(robocopy $(ProjectDir)Images $(TargetDir)..\Themes\$(ProjectName)\Images\ /s) ^&amp; IF %25ERRORLEVEL%25 LEQ 4 exit /B 0</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>

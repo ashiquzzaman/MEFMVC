@@ -13,6 +13,11 @@ namespace AzR.Web.Root.MEF
             AzRBootstrap.Intialize();
             ControllerBuilder.Current.SetControllerFactory(new AzRControllerFactory(AzRBootstrap.Container));
 
+            //foreach (var assembly in AzRBootstrap.Assemblies)
+            //{
+            //    BuildManager.AddReferencedAssembly(assembly);
+            //}
+
 
             //var dbContext = AzRBootstrap.Container.GetExportedValue<DbContext>();
             //AzRBootstrap.Container.ComposeExportedValue<DbContext>(dbContext);
@@ -24,6 +29,9 @@ namespace AzR.Web.Root.MEF
             DependencyResolver.SetResolver(resolver);
             // Install MEF dependency resolver for Web API
             System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = resolver;
+
         }
+
+
     }
 }

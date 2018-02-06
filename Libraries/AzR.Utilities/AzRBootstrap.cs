@@ -12,7 +12,7 @@ namespace AzR.Utilities
     {
         public static CompositionContainer Container { get; private set; }
         public static bool IsIntialized { get; private set; }
-
+        public static List<Assembly> Assemblies { get; private set; }
         public static void Intialize(List<string> pluginFolders)
         {
             if (IsIntialized) return;
@@ -60,14 +60,16 @@ namespace AzR.Utilities
             {
                 if (!IsIntialized)
                 {
-
+                    Assemblies = new List<Assembly>();
                     var files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "AzR.*.dll", SearchOption.AllDirectories)
                         .Where(o => !o.Replace(AppDomain.CurrentDomain.BaseDirectory, "").Contains(@"obj\")).ToList();
                     var catalog = new AggregateCatalog();
 
                     foreach (var file in files)
                     {
-                        catalog.Catalogs.Add(new AssemblyCatalog(Assembly.LoadFrom(file)));
+                        var assembly = Assembly.LoadFrom(file);
+                        Assemblies.Add(assembly);
+                        catalog.Catalogs.Add(new AssemblyCatalog(assembly));
                     }
 
                     Container = new CompositionContainer(catalog);
@@ -87,6 +89,12 @@ namespace AzR.Utilities
 
         }
 
+        public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            var currentAssemblies = Assemblies;
 
+            return currentAssemblies.FirstOrDefault(assembly =>
+                assembly.FullName == args.Name || assembly.GetName().Name == args.Name);
+        }
     }
 }
