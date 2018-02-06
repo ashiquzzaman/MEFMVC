@@ -23,22 +23,22 @@ namespace AzR.Core.Migrations
     }
 
 
-    internal sealed class ConfigurationTest : DbMigrationsConfiguration<TestDbContext>
-    {
-        public ConfigurationTest()
-        {
-            AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
-        }
+    //internal sealed class ConfigurationTest : DbMigrationsConfiguration<TestDbContext>
+    //{
+    //    public ConfigurationTest()
+    //    {
+    //        AutomaticMigrationsEnabled = true;
+    //        AutomaticMigrationDataLossAllowed = true;
+    //    }
 
-        protected override void Seed(TestDbContext context)
-        {
-            context.Departments.AddOrUpdate(e => e.Id,
-                new Department { Id = 1, Name = "A" },
-                new Department { Id = 1, Name = "B" },
-                new Department { Id = 1, Name = "C" });
-        }
-    }
+    //    protected override void Seed(TestDbContext context)
+    //    {
+    //        context.Departments.AddOrUpdate(e => e.Id,
+    //            new Department { Id = 1, Name = "A" },
+    //            new Department { Id = 1, Name = "B" },
+    //            new Department { Id = 1, Name = "C" });
+    //    }
+    //}
 
 }
 
