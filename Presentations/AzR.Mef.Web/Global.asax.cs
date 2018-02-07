@@ -12,8 +12,14 @@ namespace AzR.Mef.Web
         protected void Application_Start()
         {
 
+
+
             AzRAppRegister.Register();
-            ViewEngines.Engines.Add(new AzRViewEngine());
+
+            ViewEngines.Engines.Clear();
+            var ve = new AzRViewEngine { FileExtensions = new[] { "cshtml" } };
+            ViewEngines.Engines.Add(ve);
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
