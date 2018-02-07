@@ -59,7 +59,9 @@
     <Compile Include="Repositories\IAppDbContext.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
+    <Compile Include="Services\IDepartmentService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
   </ItemGroup>
   <ItemGroup>

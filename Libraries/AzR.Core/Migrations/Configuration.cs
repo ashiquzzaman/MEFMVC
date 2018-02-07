@@ -19,6 +19,11 @@ namespace AzR.Core.Migrations
                 new Employee { Id = 1, Name = "Rajib" },
                 new Employee { Id = 1, Name = "Ashiq" },
                 new Employee { Id = 1, Name = "Zaman" });
+
+            context.Departments.AddOrUpdate(e => e.Id,
+                new Department { Id = 1, Name = "A" },
+                new Department { Id = 1, Name = "B" },
+                new Department { Id = 1, Name = "C" });
         }
     }
 

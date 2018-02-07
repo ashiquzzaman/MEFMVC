@@ -4,7 +4,7 @@ using AzR.Web.Root.MEF;
 using System.ComponentModel.Composition;
 using System.Web.Mvc;
 
-namespace AzR.Plugin.Test.Web.Controllers
+namespace AzR.Plugin.HR.Web.Controllers
 {
     [ControllerExport(typeof(EmployeeController))]
     // [ExportMetadata("ControllerName", "Employee")]
@@ -12,16 +12,19 @@ namespace AzR.Plugin.Test.Web.Controllers
     public class EmployeeController : BaseController
     {
         private IEmployeeService _employee;
+        private readonly string _layout;
         [ImportingConstructor]
         public EmployeeController(IEmployeeService employee)
         {
             _employee = employee;
+            _layout = LayoutPages["Public"];
         }
 
         public ActionResult Index()
         {
             var employees = _employee.GetAll();
-            return View(employees);
+
+            return View("Index", _layout, employees);
         }
 
     }

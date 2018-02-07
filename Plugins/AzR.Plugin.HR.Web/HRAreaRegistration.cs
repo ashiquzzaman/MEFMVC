@@ -1,24 +1,24 @@
 ﻿using System.Web.Mvc;
 
-namespace AzR.Plugin.Test.Web
+namespace AzR.Plugin.HR.Web
 {
-    public class AdminAreaRegistration : AreaRegistration
+    public class HRAreaRegistration : AreaRegistration
     {
         public override string AreaName
         {
             get
             {
-                return "Admin";
+                return "HR";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Admin_default",
-                "Admin/{controller}/{action}/{id}",
+                "HR_default",
+                "hr/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional },
-                new[] { "AzR.Plugin.Test.Web.Controllers" }
+                new[] { "AzR.Plugin.HR.Web.Controllers" }
             );
         }
 
