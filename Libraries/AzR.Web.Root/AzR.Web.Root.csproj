@@ -83,6 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AzRLayoutAttribute.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="MEF\AzRViewEngine.cs" />
     <Compile Include="MEF\ControllerExportAttribute.cs" />
