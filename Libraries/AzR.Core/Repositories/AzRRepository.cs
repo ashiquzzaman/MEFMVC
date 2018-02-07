@@ -9,60 +9,41 @@ using System.Threading.Tasks;
 
 namespace AzR.Core.Repositories
 {
-    [Export(typeof(IRepository<>))]
+    [Export(typeof(IAzRRepository<,>))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class Repository<T> : IRepository<T> where T : class
+    public class AzRRepository<TContext, TEntity> : IAzRRepository<TContext, TEntity>
+        where TEntity : class where TContext : IAppDbContext
     {
         #region Members
-        private IAppDbContext _context;
-        [Import]
-        public IAppDbContext Context
-        {
-            get
-            {
-                return _context;
-            }
-            set
-            {
-                _context = value;
 
-            }
+        private TContext _context;
+
+        [Import]
+        public TContext Context
+        {
+            get { return _context; }
+            set { _context = value; }
         }
 
         private bool _disposed;
 
-        public Repository()
-        {
-        }
-
-
         #endregion
 
-        #region Constructor
-
-
-        /// <summary>
-        /// Create a new instance of repository
-        /// </summary>
-        /// <param name="context"></param>
-        //[ImportingConstructor]
-        //protected Repository(DbContext context)
-        //{
-        //    _context = context;
-        //}
         [ImportingConstructor]
-        public Repository(IAppDbContext context)
+        public AzRRepository(IAppDbContext context)
         {
-            Context = context;
+            Context = (TContext)context;
         }
 
-        #endregion
+
+
 
         #region PROPERTY
+
         // Entity corresponding Database Table
-        private DbSet<T> DbSet
+        private DbSet<TEntity> DbSet
         {
-            get { return _context.Set<T>(); }
+            get { return _context.Set<TEntity>(); }
         }
 
         #endregion
@@ -73,7 +54,7 @@ namespace AzR.Core.Repositories
         /// add a item in a table. item never be added until call savechanges method.
         /// </summary>
         /// <param name="item">object of a class which will be added into corresponding DB table.</param>
-        public virtual void Add(T item)
+        public virtual void Add(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -85,7 +66,7 @@ namespace AzR.Core.Repositories
         /// Remove a item in a table. item never be Removed until call savechanges method.
         /// </summary>
         /// <param name="item">object of a class which will be Removed into corresponding DB table.</param>
-        public virtual void Remove(T item)
+        public virtual void Remove(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -97,7 +78,7 @@ namespace AzR.Core.Repositories
         /// Modify a item in a table. item never be Modified until call savechanges method.
         /// </summary>
         /// <param name="item">object of a class which will be Modified into corresponding DB table.</param>
-        public virtual void Modify(T item)
+        public virtual void Modify(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -111,20 +92,21 @@ namespace AzR.Core.Repositories
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public T SingleOrDefault(Expression<Func<T, bool>> predicate)
+        public TEntity SingleOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.SingleOrDefault(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public virtual IQueryable<T> All()
+        public virtual IQueryable<TEntity> All()
         {
             return DbSet.AsNoTracking().AsQueryable();
         }
 
-        public T Create(T item)
+        public TEntity Create(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -133,7 +115,7 @@ namespace AzR.Core.Repositories
             return item;
         }
 
-        public int Update(T item)
+        public int Update(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -143,7 +125,7 @@ namespace AzR.Core.Repositories
             return _context.SaveChanges();
         }
 
-        public int Update(Expression<Func<T, bool>> predicate)
+        public int Update(Expression<Func<TEntity, bool>> predicate)
         {
             var records = FindAll(predicate);
             if (!records.Any())
@@ -161,7 +143,7 @@ namespace AzR.Core.Repositories
             return _context.SaveChanges();
         }
 
-        public int Delete(T item)
+        public int Delete(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -170,7 +152,7 @@ namespace AzR.Core.Repositories
             return _context.SaveChanges();
         }
 
-        public int Delete(Expression<Func<T, bool>> predicate)
+        public int Delete(Expression<Func<TEntity, bool>> predicate)
         {
             var records = FindAll(predicate);
             if (!records.Any())
@@ -191,67 +173,69 @@ namespace AzR.Core.Repositories
         {
             get { return DbSet.Count(); }
         }
+
         public long LongCount
         {
             get { return DbSet.LongCount(); }
         }
-        public int CountFunc(Expression<Func<T, bool>> predicate)
+
+        public int CountFunc(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Count(predicate);
         }
 
-        public long LongCountFunc(Expression<Func<T, bool>> predicate)
+        public long LongCountFunc(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.LongCount(predicate);
         }
 
-        public bool IsExist(Expression<Func<T, bool>> predicate)
+        public bool IsExist(Expression<Func<TEntity, bool>> predicate)
         {
             var count = DbSet.Count(predicate);
             return count > 0;
         }
 
-        public T First(Expression<Func<T, bool>> predicate)
+        public TEntity First(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.First(predicate);
         }
 
-        public T FirstOrDefault(Expression<Func<T, bool>> predicate)
+        public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.FirstOrDefault(predicate);
         }
 
-        public T Find(Expression<Func<T, bool>> predicate)
+        public TEntity Find(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.AsNoTracking().SingleOrDefault(predicate);
         }
 
-        public string Max(Expression<Func<T, string>> predicate)
+        public string Max(Expression<Func<TEntity, string>> predicate)
         {
             return DbSet.Max(predicate);
         }
 
-        public string MaxFunc(Expression<Func<T, string>> predicate, Expression<Func<T, bool>> where)
+        public string MaxFunc(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where)
         {
             return DbSet.Where(where).Max(predicate);
         }
 
-        public string Min(Expression<Func<T, string>> predicate)
+        public string Min(Expression<Func<TEntity, string>> predicate)
         {
             return DbSet.Min(predicate);
         }
 
-        public string MinFunc(Expression<Func<T, string>> predicate, Expression<Func<T, bool>> where)
+        public string MinFunc(Expression<Func<TEntity, string>> predicate, Expression<Func<TEntity, bool>> where)
         {
             return DbSet.Where(where).Min(predicate);
         }
 
-        public IQueryable<T> Where(Expression<Func<T, bool>> predicate)
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Where(predicate);
         }
 
-        public IQueryable<T> FindAll(Expression<Func<T, bool>> predicate)
+        public IQueryable<TEntity> FindAll(Expression<Func<TEntity, bool>> predicate)
         {
             return DbSet.Where(predicate).AsNoTracking().AsQueryable();
         }
@@ -260,7 +244,7 @@ namespace AzR.Core.Repositories
 
         #region IDisposable Members
 
-        ~Repository()
+        ~AzRRepository()
         {
             Dispose(false);
         }
@@ -283,7 +267,7 @@ namespace AzR.Core.Repositories
                     if (_context != null)
                     {
                         _context.Dispose();
-                        _context = null;
+                        //  _context = null;
                     }
                 }
             }
@@ -299,25 +283,27 @@ namespace AzR.Core.Repositories
         /// 
         /// </summary>
         /// <returns></returns>
-        public async Task<ICollection<T>> GetAllAsync()
+        public async Task<ICollection<TEntity>> GetAllAsync()
         {
             return await DbSet.ToListAsync();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<T> FindAsync(Expression<Func<T, bool>> predicate)
+        public async Task<TEntity> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<ICollection<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
+        public async Task<ICollection<TEntity>> FindAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.Where(predicate).AsNoTracking().ToListAsync();
         }
@@ -327,7 +313,7 @@ namespace AzR.Core.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<T> CreateAsync(T entity)
+        public async Task<TEntity> CreateAsync(TEntity entity)
         {
             DbSet.Add(entity);
             await _context.SaveChangesAsync();
@@ -339,7 +325,7 @@ namespace AzR.Core.Repositories
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public async Task<int> UpdateAsync(T item)
+        public async Task<int> UpdateAsync(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
@@ -348,12 +334,13 @@ namespace AzR.Core.Repositories
             entry.State = EntityState.Modified;
             return await _context.SaveChangesAsync();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<int> UpdateAsync(Expression<Func<T, bool>> predicate)
+        public async Task<int> UpdateAsync(Expression<Func<TEntity, bool>> predicate)
         {
             var records = await DbSet.Where(predicate).ToListAsync();
             if (!records.Any())
@@ -376,17 +363,18 @@ namespace AzR.Core.Repositories
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(T t)
+        public async Task<int> DeleteAsync(TEntity t)
         {
             DbSet.Remove(t);
             return await _context.SaveChangesAsync();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<int> DeleteAsync(Expression<Func<T, bool>> predicate)
+        public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
         {
             var records = await DbSet.Where(predicate).ToListAsync();
             if (!records.Any())
@@ -417,67 +405,75 @@ namespace AzR.Core.Repositories
         {
             return await DbSet.LongCountAsync();
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<int> CountFuncAsync(Expression<Func<T, bool>> predicate)
+        public async Task<int> CountFuncAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.CountAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<long> LongCountFuncAsync(Expression<Func<T, bool>> predicate)
+        public async Task<long> LongCountFuncAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.LongCountAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<T> FirstAsync(Expression<Func<T, bool>> predicate)
+        public async Task<TEntity> FirstAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.FirstAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate)
+        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await DbSet.FirstOrDefaultAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<string> MaxAsync(Expression<Func<T, string>> predicate)
+        public async Task<string> MaxAsync(Expression<Func<TEntity, string>> predicate)
         {
             return await DbSet.MaxAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <param name="where"></param>
         /// <returns></returns>
-        public async Task<string> MaxFuncAsync(Expression<Func<T, string>> predicate, Expression<Func<T, bool>> where)
+        public async Task<string> MaxFuncAsync(Expression<Func<TEntity, string>> predicate,
+            Expression<Func<TEntity, bool>> where)
         {
             return await DbSet.Where(where).MaxAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<string> MinAsync(Expression<Func<T, string>> predicate)
+        public async Task<string> MinAsync(Expression<Func<TEntity, string>> predicate)
         {
             return await DbSet.MinAsync(predicate);
         }
@@ -488,16 +484,18 @@ namespace AzR.Core.Repositories
         /// <param name="predicate"></param>
         /// <param name="where"></param>
         /// <returns></returns>
-        public async Task<string> MinFuncAsync(Expression<Func<T, string>> predicate, Expression<Func<T, bool>> where)
+        public async Task<string> MinFuncAsync(Expression<Func<TEntity, string>> predicate,
+            Expression<Func<TEntity, bool>> where)
         {
             return await DbSet.Where(where).MinAsync(predicate);
         }
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistAsync(Expression<Func<T, bool>> predicate)
+        public async Task<bool> IsExistAsync(Expression<Func<TEntity, bool>> predicate)
         {
             var count = await DbSet.CountAsync(predicate);
             return count > 0;
@@ -518,7 +516,7 @@ namespace AzR.Core.Repositories
                 throw new Exception(ex.Message);
             }
         }
-        #endregion
 
+        #endregion
     }
 }

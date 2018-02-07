@@ -24,6 +24,8 @@ namespace AzR.Core.Repositories
             _context = context;
         }
 
+
+
         public dynamic ExecuteProcedrue(string sp, object[] paramaters)
         {
             StringBuilder sb = new StringBuilder(sp);
@@ -71,10 +73,27 @@ namespace AzR.Core.Repositories
 
                 _repositories.Add(type, repositoryInstance);
             }
-
             return (IRepository<TEntity>)_repositories[type];
         }
+        public IAzRRepository<TContext, TEntity> AzRRepository<TContext, TEntity>() where TContext : IAppDbContext where TEntity : class
+        {
+            if (_repositories == null)
+                _repositories = new Hashtable();
 
+            var type = typeof(TEntity).Name;
+
+            if (!_repositories.ContainsKey(type))
+            {
+                var repositoryType = typeof(AzRRepository<,>);
+
+                var repositoryInstance =
+                    Activator.CreateInstance(repositoryType
+                        .MakeGenericType(typeof(TContext), typeof(TEntity)));
+
+                _repositories.Add(type, repositoryInstance);
+            }
+            return (IAzRRepository<TContext, TEntity>)_repositories[type];
+        }
 
         public void Migrate<TContext, TConfiguration>() where TContext : DbContext where TConfiguration : DbMigrationsConfiguration<TContext>, new()
         {

@@ -19,7 +19,9 @@ namespace AzR.Core.Services
         }
         public List<Department> GetAll()
         {
-            return _dbContext.Repository<Department>().All().ToList();
+            //return _dbContext.Repository<Department>().All().ToList();
+            return _dbContext.AzRRepository<ApplicationDbContext, Department>().All().ToList();
+
         }
 
 

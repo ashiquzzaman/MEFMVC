@@ -8,6 +8,7 @@ namespace AzR.Core.Repositories
     {
         void Dispose(bool disposing);
         IRepository<TEntity> Repository<TEntity>() where TEntity : class;
+        IAzRRepository<TContext, TEntity> AzRRepository<TContext, TEntity>() where TContext : IAppDbContext where TEntity : class;
 
         dynamic ExecuteProcedrue(string sp, object[] paramaters);
         void Migrate<TContext, TConfiguration>() where TContext : DbContext where TConfiguration : DbMigrationsConfiguration<TContext>, new();

@@ -23,7 +23,6 @@ namespace AzR.Web.Root.MEF
             //AzRBootstrap.Container.ComposeExportedValue<DbContext>(dbContext);
 
 
-
             var resolver = new AzRDependencyResolver(AzRBootstrap.Container);
             // Install MEF dependency resolver for MVC
             DependencyResolver.SetResolver(resolver);

@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EmployeeTypeController.cs" />
     <Compile Include="HRAreaRegistration.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +92,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Content Include="Views\Employee\Index.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\EmployeeType\Index.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
