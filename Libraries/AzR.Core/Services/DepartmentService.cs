@@ -11,16 +11,16 @@ namespace AzR.Core.Services
     {
 
         [Import]
-        private IAppContext _dbContext;
+        private IAppContext<ApplicationDbContext> _dbContext;
         [ImportingConstructor]
-        public DepartmentService(IAppContext dbContext)
+        public DepartmentService(IAppContext<ApplicationDbContext> dbContext)
         {
             _dbContext = dbContext;
         }
         public List<Department> GetAll()
         {
             //return _dbContext.Repository<Department>().All().ToList();
-            return _dbContext.AzRRepository<ApplicationDbContext, Department>().All().ToList();
+            return _dbContext.AzRRepository<Department>().All().ToList();
 
         }
 

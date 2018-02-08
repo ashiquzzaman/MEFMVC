@@ -11,8 +11,8 @@ namespace AzR.Core.Services
     {
 
         [Import]
-        public ExportFactory<IAppContext> Context { get; set; }
-        protected IAppContext DbContext
+        public ExportFactory<IAppContext<ApplicationDbContext>> Context { get; set; }
+        protected IAppContext<ApplicationDbContext> DbContext
         {
             get { return Context.CreateExport().Value; }
         }

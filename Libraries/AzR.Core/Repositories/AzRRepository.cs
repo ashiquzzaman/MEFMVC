@@ -18,21 +18,15 @@ namespace AzR.Core.Repositories
 
         private TContext _context;
 
-        [Import]
-        public TContext Context
-        {
-            get { return _context; }
-            set { _context = value; }
-        }
 
         private bool _disposed;
 
         #endregion
 
         [ImportingConstructor]
-        public AzRRepository(IAppDbContext context)
+        public AzRRepository(TContext context)
         {
-            Context = (TContext)context;
+            _context = context;
         }
 
 

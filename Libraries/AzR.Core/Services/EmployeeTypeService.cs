@@ -11,15 +11,15 @@ namespace AzR.Core.Services
     {
 
         [Import]
-        private IAzRRepository<TestDbContext, EmployeeType> _employeeType;
+        private IAppContext<TestDbContext> _dbContext;
         [ImportingConstructor]
-        public EmployeeTypeService(IAzRRepository<TestDbContext, EmployeeType> employeeType)
+        public EmployeeTypeService(IAppContext<TestDbContext> dbContext)
         {
-            _employeeType = employeeType;
+            _dbContext = dbContext;
         }
         public List<EmployeeType> GetAll()
         {
-            return _employeeType.All().ToList();
+            return _dbContext.AzRRepository<EmployeeType>().All().ToList();
         }
     }
 }

@@ -9,7 +9,6 @@ namespace AzR.Core.Repositories
     public interface IAzRRepository<TContext, TEntity> : IDisposable
         where TEntity : class where TContext : IAppDbContext
     {
-        TContext Context { get; set; }
         #region LINQ QUERY
 
         /// <summary>

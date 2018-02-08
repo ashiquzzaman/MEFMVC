@@ -9,17 +9,17 @@ using System.Text;
 
 namespace AzR.Core.Repositories
 {
-    [Export(typeof(IAppContext))]
+    [Export(typeof(IAppContext<>))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
-    public class AppContext : IAppContext
+    public class AppContext<TContext> : IAppContext<TContext> where TContext : IAppDbContext
     {
-        private readonly IAppDbContext _context;
+        private readonly TContext _context;
 
         private bool _disposed;
         private Hashtable _repositories;
 
         [ImportingConstructor]
-        public AppContext(IAppDbContext context)
+        public AppContext(TContext context)
         {
             _context = context;
         }
@@ -75,7 +75,7 @@ namespace AzR.Core.Repositories
             }
             return (IRepository<TEntity>)_repositories[type];
         }
-        public IAzRRepository<TContext, TEntity> AzRRepository<TContext, TEntity>() where TContext : IAppDbContext where TEntity : class
+        public IAzRRepository<TContext, TEntity> AzRRepository<TEntity>() where TEntity : class
         {
             if (_repositories == null)
                 _repositories = new Hashtable();
@@ -88,16 +88,16 @@ namespace AzR.Core.Repositories
 
                 var repositoryInstance =
                     Activator.CreateInstance(repositoryType
-                        .MakeGenericType(typeof(TContext), typeof(TEntity)));
+                        .MakeGenericType(typeof(TContext), typeof(TEntity)), _context);
 
                 _repositories.Add(type, repositoryInstance);
             }
             return (IAzRRepository<TContext, TEntity>)_repositories[type];
         }
 
-        public void Migrate<TContext, TConfiguration>() where TContext : DbContext where TConfiguration : DbMigrationsConfiguration<TContext>, new()
+        public void Migrate<TDbContext, TConfiguration>() where TDbContext : DbContext where TConfiguration : DbMigrationsConfiguration<TDbContext>, new()
         {
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<TContext, TConfiguration>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<TDbContext, TConfiguration>());
         }
     }
 }
