@@ -10,16 +10,29 @@ namespace AzR.Core.Services
     public class EmployeeTypeService : IEmployeeTypeService
     {
 
-        [Import]
-        private IAppContext<TestDbContext> _dbContext;
+        //[Import]
+        //private IAppContext<TestDbContext> _dbContext;
+
+
+        //[ImportingConstructor]
+        //public EmployeeTypeService(IAppContext<TestDbContext> dbContext)
+        //{
+        //    _dbContext = dbContext;
+        //}
+        //public List<EmployeeType> GetAll()
+        //{
+        //    return _dbContext.AzRRepository<EmployeeType>().All().ToList();
+        //}
+
+        private IAzRRepository<TestDbContext, EmployeeType> _employeeType;
         [ImportingConstructor]
-        public EmployeeTypeService(IAppContext<TestDbContext> dbContext)
+        public EmployeeTypeService(IAzRRepository<TestDbContext, EmployeeType> employeeType)
         {
-            _dbContext = dbContext;
+            _employeeType = employeeType;
         }
         public List<EmployeeType> GetAll()
         {
-            return _dbContext.AzRRepository<EmployeeType>().All().ToList();
+            return _employeeType.All().ToList();
         }
     }
 }
