@@ -31,14 +31,15 @@ namespace AzR.Core.Repositories
 
         private bool _disposed;
 
-        public Repository()
-        {
-        }
 
 
         #endregion
 
         #region Constructor
+
+        public Repository()
+        {
+        }
 
 
         /// <summary>

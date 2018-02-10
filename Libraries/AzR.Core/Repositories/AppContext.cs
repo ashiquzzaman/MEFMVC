@@ -75,25 +75,6 @@ namespace AzR.Core.Repositories
             }
             return (IRepository<TEntity>)_repositories[type];
         }
-        public IAzRRepository<TContext, TEntity> AzRRepository<TEntity>() where TEntity : class
-        {
-            if (_repositories == null)
-                _repositories = new Hashtable();
-
-            var type = typeof(TEntity).Name;
-
-            if (!_repositories.ContainsKey(type))
-            {
-                var repositoryType = typeof(AzRRepository<,>);
-
-                var repositoryInstance =
-                    Activator.CreateInstance(repositoryType
-                        .MakeGenericType(typeof(TContext), typeof(TEntity)), _context);
-
-                _repositories.Add(type, repositoryInstance);
-            }
-            return (IAzRRepository<TContext, TEntity>)_repositories[type];
-        }
 
         public void Migrate<TDbContext, TConfiguration>() where TDbContext : DbContext where TConfiguration : DbMigrationsConfiguration<TDbContext>, new()
         {

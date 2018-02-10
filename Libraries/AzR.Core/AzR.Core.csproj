@@ -61,11 +61,9 @@
     <Compile Include="Repositories\IAppDbContext.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
-    <Compile Include="Repositories\AzRRepository.cs" />
     <Compile Include="Services\DepartmentService.cs" />
     <Compile Include="Services\EmployeeService.cs" />
     <Compile Include="Services\EmployeeTypeService.cs" />
-    <Compile Include="Repositories\IAzRRepository.cs" />
     <Compile Include="Services\IDepartmentService.cs" />
     <Compile Include="Services\IEmployeeTypeService.cs" />
     <Compile Include="Services\IEmployeeService.cs" />
