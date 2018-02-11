@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
@@ -16,7 +16,7 @@ namespace AzR.Core.Repositories
         private readonly TContext _context;
 
         private bool _disposed;
-        private Hashtable _repositories;
+        private Dictionary<string, object> _repositories;
 
         [ImportingConstructor]
         public AppContext(TContext context)
@@ -59,7 +59,7 @@ namespace AzR.Core.Repositories
         public IRepository<TEntity> Repository<TEntity>() where TEntity : class
         {
             if (_repositories == null)
-                _repositories = new Hashtable();
+                _repositories = new Dictionary<string, object>();
 
             var type = typeof(TEntity).Name;
 
@@ -78,7 +78,7 @@ namespace AzR.Core.Repositories
         public IAzRRepository<TContext, TEntity> AzRRepository<TEntity>() where TEntity : class
         {
             if (_repositories == null)
-                _repositories = new Hashtable();
+                _repositories = new Dictionary<string, object>();
 
             var type = typeof(TEntity).Name;
 
