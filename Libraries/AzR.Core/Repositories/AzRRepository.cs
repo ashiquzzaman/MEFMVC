@@ -16,6 +16,7 @@ namespace AzR.Core.Repositories
     {
         #region Members
 
+        [Import]
         private TContext _context;
 
 
@@ -23,6 +24,9 @@ namespace AzR.Core.Repositories
 
         #endregion
 
+        public AzRRepository()
+        {
+        }
         [ImportingConstructor]
         public AzRRepository(TContext context)
         {
