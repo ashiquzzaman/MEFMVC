@@ -4,7 +4,7 @@ using System.Data.Entity;
 
 namespace AzR.Core.Repositories
 {
-    [Export(typeof(TestDbContext))]
+    [Export(typeof(IAppDbContext))]
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public class TestDbContext : DbContext, IAppDbContext
     {

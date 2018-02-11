@@ -11,15 +11,16 @@ namespace AzR.Core.Services
     {
 
         [Import]
-        public ExportFactory<IAppContext<ApplicationDbContext>> Context { get; set; }
-        protected IAppContext<ApplicationDbContext> DbContext
+        IRepository<Employee> _employee;
+        [ImportingConstructor]
+        public EmployeeService(IRepository<Employee> employee)
         {
-            get { return Context.CreateExport().Value; }
+            _employee = employee;
         }
 
         public List<Employee> GetAll()
         {
-            return DbContext.Repository<Employee>().All().ToList();
+            return _employee.All().ToList();
         }
     }
 }
